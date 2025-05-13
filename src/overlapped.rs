@@ -2,7 +2,6 @@ use std::fmt;
 use std::io;
 use std::mem;
 use std::ptr;
-
 use windows_sys::Win32::Foundation::HANDLE;
 use windows_sys::Win32::System::Threading::CreateEventW;
 use windows_sys::Win32::System::IO::OVERLAPPED;
@@ -35,7 +34,7 @@ impl Overlapped {
     /// single thread waits on the event, it will be reset.
     pub fn initialize_with_autoreset_event() -> io::Result<Overlapped> {
         let event = unsafe { CreateEventW(ptr::null_mut(), 0i32, 0i32, ptr::null_mut()) };
-        if event == 0 {
+        if event == std::ptr::null_mut() {
             return Err(io::Error::last_os_error());
         }
         let mut overlapped = Self::zero();
